@@ -1,0 +1,68 @@
+
+# PANDUAN VALIDASI MANUAL SEVERITY ANNOTATION
+
+## Tujuan
+Memvalidasi akurasi threshold severity otomatis dengan cara manual review pada 200 sample images.
+
+## Cara Melakukan Validasi
+
+### 1. Buka Folder Validasi
+   Lokasi: /content/drive/MyDrive/ipynb-project/Road-Damage-Severity-Levels/validation_samples
+   
+   Struktur folder:
+   - class_0/ → Longitudinal Crack samples
+   - class_1/ → Transverse Crack samples
+   - class_2/ → Alligator Crack samples
+   - class_4/ → Pothole samples
+
+### 2. Review Setiap Gambar
+   
+   Setiap gambar memiliki bounding box dengan warna:
+   - 🟢 HIJAU = Rendah
+   - 🟠 ORANGE = Sedang
+   - 🔴 MERAH = Tinggi
+   
+   Label format: "C{class_id}-{Severity}"
+   Contoh: "C0-Sedang" = Class 0 (Longitudinal Crack), Severity Sedang
+
+### 3. Isi Validation Checklist CSV
+   
+   File: validation_checklist.csv
+   
+   Untuk setiap baris, isi kolom berikut:
+   
+   - **manual_severity**: Tulis severity menurut Anda (Rendah/Sedang/Tinggi)
+   - **is_correct**: Tulis "Yes" jika setuju dengan auto annotation, "No" jika tidak
+   - **reviewer_notes**: (Optional) Catatan kenapa berbeda atau ada keraguan
+   
+### 4. Kriteria Penilaian Severity (Panduan)
+   
+   **RENDAH:**
+   - Kerusakan sangat kecil, tidak mengganggu kendaraan
+   - Area kerusakan < 5% dari frame
+   - Tidak perlu perbaikan segera
+   
+   **SEDANG:**
+   - Kerusakan terlihat jelas, bisa mengganggu kenyamanan
+   - Area kerusakan 5-15% dari frame
+   - Perlu dijadwalkan perbaikan dalam beberapa minggu
+   
+   **TINGGI:**
+   - Kerusakan besar, berbahaya untuk pengendara (terutama motor)
+   - Area kerusakan > 15% dari frame
+   - Perlu perbaikan segera (prioritas tinggi)
+
+### 5. Setelah Selesai Review
+   
+   - Save file validation_checklist.csv
+   - Hitung inter-rater agreement:
+     * Berapa persen yang "is_correct" = "Yes"?
+     * Jika < 70%, threshold perlu disesuaikan
+   
+   - Upload hasil review untuk analisis di Notebook selanjutnya
+
+## Catatan Penting
+- Review dilakukan oleh minimal 2 orang untuk mengurangi bias
+- Jika ragu antara Rendah-Sedang atau Sedang-Tinggi, pilih yang lebih konservatif (lebih tinggi)
+- Fokus pada area kerusakan relatif terhadap frame, bukan ukuran absolut
+
