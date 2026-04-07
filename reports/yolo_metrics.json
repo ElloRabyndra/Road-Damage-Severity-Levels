@@ -1,0 +1,18 @@
+{
+  "model": "YOLOv8m",
+  "dataset": "RDD2022 (processed)",
+  "training_epochs": 100,
+  "validation_results": {
+    "mAP@0.5": 0.5191154251470314,
+    "mAP@0.5:0.95": 0.2548857146156524,
+    "precision": 0.5651401937865234,
+    "recall": 0.5130086281596986
+  },
+  "test_results": {
+    "mAP@0.5": 0.5303884897480058,
+    "mAP@0.5:0.95": 0.2603984595038119,
+    "precision": 0.5808431706337631,
+    "recall": 0.5053848895039244
+  },
+  "model_path": "/content/drive/MyDrive/ipynb-project/Road-Damage-Severity-Levels/models/yolov8_best.pt"
+}

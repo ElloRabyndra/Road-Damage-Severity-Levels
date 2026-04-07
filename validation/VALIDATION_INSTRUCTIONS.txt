@@ -1,68 +1,186 @@
 
-# PANDUAN VALIDASI MANUAL SEVERITY ANNOTATION
+╔══════════════════════════════════════════════════════════════════════════════╗
+║                                                                              ║
+║          PANDUAN VALIDASI MANUAL SEVERITY ANNOTATION                         ║
+║          Klasifikasi Tingkat Bahaya Kerusakan Jalan                          ║
+║                                                                              ║
+╚══════════════════════════════════════════════════════════════════════════════╝
 
-## Tujuan
-Memvalidasi akurasi threshold severity otomatis dengan cara manual review pada 200 sample images.
+ LOKASI FILE VALIDASI
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Folder: /content/drive/MyDrive/ipynb-project/Road-Damage-Severity-Levels/validation_samples
 
-## Cara Melakukan Validasi
+Struktur:
+   class_0/  → Longitudinal Crack (Retak Memanjang)
+   class_1/  → Transverse Crack (Retak Melintang)
+   class_2/  → Alligator Crack (Retak Kulit Buaya)
+   class_4/  → Pothole (Lubang)
 
-### 1. Buka Folder Validasi
-   Lokasi: /content/drive/MyDrive/ipynb-project/Road-Damage-Severity-Levels/validation_samples
-   
-   Struktur folder:
-   - class_0/ → Longitudinal Crack samples
-   - class_1/ → Transverse Crack samples
-   - class_2/ → Alligator Crack samples
-   - class_4/ → Pothole samples
+   validation_checklist.csv  ← FILE YANG HARUS DIISI
 
-### 2. Review Setiap Gambar
-   
-   Setiap gambar memiliki bounding box dengan warna:
-   - 🟢 HIJAU = Rendah
-   - 🟠 ORANGE = Sedang
-   - 🔴 MERAH = Tinggi
-   
-   Label format: "C{class_id}-{Severity}"
-   Contoh: "C0-Sedang" = Class 0 (Longitudinal Crack), Severity Sedang
 
-### 3. Isi Validation Checklist CSV
-   
-   File: validation_checklist.csv
-   
-   Untuk setiap baris, isi kolom berikut:
-   
-   - **manual_severity**: Tulis severity menurut Anda (Rendah/Sedang/Tinggi)
-   - **is_correct**: Tulis "Yes" jika setuju dengan auto annotation, "No" jika tidak
-   - **reviewer_notes**: (Optional) Catatan kenapa berbeda atau ada keraguan
-   
-### 4. Kriteria Penilaian Severity (Panduan)
-   
-   **RENDAH:**
-   - Kerusakan sangat kecil, tidak mengganggu kendaraan
-   - Area kerusakan < 5% dari frame
-   - Tidak perlu perbaikan segera
-   
-   **SEDANG:**
-   - Kerusakan terlihat jelas, bisa mengganggu kenyamanan
-   - Area kerusakan 5-15% dari frame
-   - Perlu dijadwalkan perbaikan dalam beberapa minggu
-   
-   **TINGGI:**
-   - Kerusakan besar, berbahaya untuk pengendara (terutama motor)
-   - Area kerusakan > 15% dari frame
-   - Perlu perbaikan segera (prioritas tinggi)
+══════════════════════════════════════════════════════════════════════════════
+ TUJUAN VALIDASI
+═══════════════════════════════════════════════════════════════════════════════
 
-### 5. Setelah Selesai Review
-   
-   - Save file validation_checklist.csv
-   - Hitung inter-rater agreement:
-     * Berapa persen yang "is_correct" = "Yes"?
-     * Jika < 70%, threshold perlu disesuaikan
-   
-   - Upload hasil review untuk analisis di Notebook selanjutnya
+Memvalidasi apakah threshold severity otomatis (yang dihitung dari area ratio
+bounding box) sudah sesuai dengan penilaian visual manusia.
 
-## Catatan Penting
-- Review dilakukan oleh minimal 2 orang untuk mengurangi bias
-- Jika ragu antara Rendah-Sedang atau Sedang-Tinggi, pilih yang lebih konservatif (lebih tinggi)
-- Fokus pada area kerusakan relatif terhadap frame, bukan ukuran absolut
+
+═══════════════════════════════════════════════════════════════════════════════
+ KRITERIA SEVERITY - BERDASARKAN AREA KERUSAKAN DALAM FRAME
+═══════════════════════════════════════════════════════════════════════════════
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  RENDAH (Low Severity)                                                      │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ • Area kerusakan: KURANG DARI 5% total frame                                │
+│ • Contoh:                                                                   │
+│   - Retak tipis seperti garis pensil                                        │
+│   - Lubang kecil seukuran koin                                              │
+│   - Kerusakan yang hanya memakan pojok/sudut kecil frame                    │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  SEDANG (Medium Severity)                                                   │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ • Area kerusakan: ANTARA 5% - 15% total frame                               │
+│ • Visualisasi: Kerusakan jelas terlihat, memakan area signifikan            │
+│ • Contoh:                                                                   │
+│   - Retak yang cukup lebar/panjang, tapi tidak dominan                      │
+│   - Lubang berukuran sedang                                                 │
+│   - Kerusakan yang memakan sekitar 1/10 hingga 1/6 area frame               │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│  TINGGI (High Severity)                                                     │
+│ • Contoh:                                                                   │
+│   - Alligator crack yang menyebar luas                                      │
+│   - Lubang besar yang sangat terlihat                                       │
+│   - Kerusakan yang memakan lebih dari 1/6 area frame                        │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+
+═══════════════════════════════════════════════════════════════════════════════
+ RULE OF THUMB - CARA CEPAT MENILAI
+═══════════════════════════════════════════════════════════════════════════════
+
+Ketika melihat gambar, tanyakan pada diri Anda:
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                             │
+│  "Jika frame foto ini dibagi 20 kotak sama besar (4×5),                     │
+│   • 1-3 kotak                   → SEDANG                                    │
+│   • Lebih dari 3 kotak          → TINGGI                                    │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+ATAU gunakan acuan ini:
+
+   RENDAH   = Kerusakan lebih kecil dari 1 jari telunjuk di layar Anda
+   SEDANG   = Kerusakan seukuran 2-3 jari atau setengah telapak tangan
+   TINGGI   = Kerusakan lebih besar dari telapak tangan
+
+
+═══════════════════════════════════════════════════════════════════════════════
+CARA MENGISI VALIDATION_CHECKLIST.CSV
+═══════════════════════════════════════════════════════════════════════════════
+
+Buka file CSV di Google Sheets (JANGAN buka langsung, tapi IMPORT dulu!):
+  1. Download file validation_checklist.csv
+  2. Buka Google Sheets baru
+  3. File → Import → Upload → Pilih validation_checklist.csv
+  4. Separator type: Comma
+  5. Klik "Import data"
+
+Isi 3 kolom berikut untuk setiap baris:
+
+┌─────────────────────────┬────────────────────────────────────────────────────┐
+│ Kolom                   │ Cara Mengisi                                       │
+├─────────────────────────┼────────────────────────────────────────────────────┤
+│ manual_severity         │ Tulis: Rendah / Sedang / Tinggi                    │
+└─────────────────────────┴────────────────────────────────────────────────────┘
+
+
+═══════════════════════════════════════════════════════════════════════════════
+SKENARIO KHUSUS & CARA MENGATASINYA
+═══════════════════════════════════════════════════════════════════════════════
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ SKENARIO 1: Saya bingung ini berapa persen area-nya                         │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ SOLUSI:                                                                     │
+│ → Lihat kolom 'area_ratio' di CSV sebagai referensi                         │
+│                                                                             │
+│ TAPI: Jangan hanya copy nilai area_ratio! Tetap lihat gambar dulu.          │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ SKENARIO 2: Foto dari jauh, kerusakan kecil tapi saya tahu itu berbahaya    │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ SOLUSI:                                                                     │
+│ → Tetap nilai berdasarkan AREA VISUAL di frame, bukan bahaya nyata          │
+│                                                                             │
+│ ALASAN:                                                                     │
+│ → Model hanya bisa lihat pixel 2D, tidak bisa tahu kedalaman                │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ SKENARIO 3: Area 5-15% (border antara Rendah-Sedang atau Sedang-Tinggi)     │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ SOLUSI:                                                                     │
+│ → Jika ragu antara Rendah vs Sedang: Pilih yang lebih mendekati             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ SKENARIO 4: Satu gambar ada banyak bounding box dengan severity berbeda     │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ SOLUSI:                                                                     │
+│ → Nilai SETIAP bounding box secara INDEPENDEN                               │
+│ → Dalam 1 gambar bisa ada bbox Rendah, Sedang, Tinggi sekaligus             │
+│ → Lihat label di pojok bbox untuk tahu mana yang sedang dinilai             │
+└─────────────────────────────────────────────────────────────────────────────┘
+
+
+═══════════════════════════════════════════════════════════════════════════════
+CHECKLIST SEBELUM SUBMIT
+═══════════════════════════════════════════════════════════════════════════════
+
+Sebelum menyerahkan hasil validasi, pastikan:
+
+  ☐ Semua 200+ baris sudah diisi (tidak ada yang kosong di kolom wajib)
+  ☐ Kolom 'manual_severity' hanya berisi: Rendah / Sedang / Tinggi
+  ☐ Kolom 'is_correct' hanya berisi: Yes / No
+  ☐ File disimpan sebagai .csv (bukan .xlsx)
+  ☐ Minimal 2 orang sudah review untuk cross-check
+
+
+═══════════════════════════════════════════════════════════════════════════════
+TARGET VALIDASI
+═══════════════════════════════════════════════════════════════════════════════
+
+Setelah review selesai, hitung:
+
+  Persentase "is_correct" = Yes: __________%
+
+  • Jika ≥ 70% → Threshold bagus, lanjut ke training
+  • Jika < 70% → Threshold perlu disesuaikan
+
+
+═══════════════════════════════════════════════════════════════════════════════
+PENTING: PRINSIP UTAMA
+═══════════════════════════════════════════════════════════════════════════════
+
+  1. FOKUS PADA AREA VISUAL dalam frame, BUKAN bahaya nyata di lapangan
+
+  2. jika terlihat kecil, maka Rendah; besar, maka Tinggi
+
+  3. Gunakan area_ratio sebagai REFERENSI, bukan sebagai jawaban final
+
+  4. Jika ragu, gunakan Rule of Thumb "20 kotak" atau "ukuran jari"
+
+  5. Konsisten lebih penting daripada sempurna
+
+
+═══════════════════════════════════════════════════════════════════════════════
 

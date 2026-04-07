@@ -1,6 +1,6 @@
 {
-  "total_images": 200,
-  "total_annotations": 316,
+  "total_images": 199,
+  "total_annotations": 673,
   "samples_per_class": {
     "0": 50,
     "1": 50,
@@ -8,9 +8,9 @@
     "4": 50
   },
   "severity_distribution": {
-    "Rendah": 110,
-    "Sedang": 106,
-    "Tinggi": 100
+    "Rendah": 574,
+    "Sedang": 67,
+    "Tinggi": 32
   },
   "validation_checklist_path": "/content/drive/MyDrive/ipynb-project/Road-Damage-Severity-Levels/validation_samples/validation_checklist.csv",
   "instructions_path": "/content/drive/MyDrive/ipynb-project/Road-Damage-Severity-Levels/validation_samples/VALIDATION_INSTRUCTIONS.txt",
