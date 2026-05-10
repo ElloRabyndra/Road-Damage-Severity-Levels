@@ -52,5 +52,13 @@ The `reports/` directory contains evaluation metrics in JSON format and comprehe
 - CNN Training Curves: `reports/figure/cnn/training_curves.png`
 - CNN Sample Predictions: `reports/figure/cnn/sample_predictions.png`
 
+## Integrated Pipeline Evaluation
+The `inference/` directory contains the final evaluation results from running the integrated end-to-end pipeline (YOLOv8 followed by CNN) on the test set. It includes:
+- `evaluation_summary.txt`: A concise text summary of the integrated pipeline's performance across 5,758 test images.
+- `inference_results.json`: Detailed, per-image detection and classification results.
+- `final_evaluation_report.json`: Comprehensive pipeline evaluation metrics.
+- `cnn_severity_metrics.json` & `yolo_detection_metrics.json`: Specific model metrics generated during the inference phase.
+- `figure/`: Final visualizations, including inference outputs (`inference_visualitation.png`) and summary charts (`summary_charts.png`).
+
 ## Validation Process
 A crucial part of this project involves ensuring the automated severity calculation aligns with human perception. The `validation/` directory contains instructions (`VALIDATION_INSTRUCTIONS.txt`) for human annotators to manually verify the bounding box area thresholds against visual guidelines.
