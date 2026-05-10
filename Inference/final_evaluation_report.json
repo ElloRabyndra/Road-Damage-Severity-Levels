@@ -1,0 +1,85 @@
+{
+  "evaluation_metadata": {
+    "timestamp": "2026-04-08T01:35:25.242665",
+    "test_set_size": 5758,
+    "images_with_detections": 3729,
+    "total_detections": 7875
+  },
+  "detection_performance": {
+    "mAP@0.5": 0.5303884897480058,
+    "mAP@0.5:0.95": 0.2603984595038119,
+    "precision": 0.5808431706337631,
+    "recall": 0.5053848895039244
+  },
+  "severity_classification_performance": {
+    "classification_report": {
+      "Rendah": {
+        "precision": 0.8241782006920415,
+        "recall": 0.9005198487712666,
+        "f1-score": 0.8606594399277326,
+        "support": 4232.0
+      },
+      "Sedang": {
+        "precision": 0.44709388971684055,
+        "recall": 0.27752081406105455,
+        "f1-score": 0.3424657534246575,
+        "support": 1081.0
+      },
+      "Tinggi": {
+        "precision": 0.5377697841726619,
+        "recall": 0.5557620817843866,
+        "f1-score": 0.546617915904936,
+        "support": 538.0
+      },
+      "accuracy": 0.7537173132797812,
+      "macro avg": {
+        "precision": 0.603013958193848,
+        "recall": 0.5779342482055693,
+        "f1-score": 0.5832477030857753,
+        "support": 5851.0
+      },
+      "weighted avg": {
+        "precision": 0.7281748049901754,
+        "recall": 0.7537173132797812,
+        "f1-score": 0.7360445510140275,
+        "support": 5851.0
+      }
+    },
+    "confusion_matrix": [
+      [
+        3811,
+        273,
+        148
+      ],
+      [
+        672,
+        300,
+        109
+      ],
+      [
+        141,
+        98,
+        299
+      ]
+    ],
+    "total_samples": 5851
+  },
+  "confidence_statistics": {
+    "detection": {
+      "mean": 0.46595042699102374,
+      "std": 0.16074532721288243,
+      "min": 0.2500343322753906,
+      "max": 0.9379509091377258
+    },
+    "severity": {
+      "mean": 0.6446731844061897,
+      "std": 0.13260194541016415,
+      "min": 0.33549049496650696,
+      "max": 0.9275243282318115
+    }
+  },
+  "sample_visualizations": {
+    "total_generated": 21,
+    "directory": "/content/drive/MyDrive/ipynb-project/Road-Damage-Severity-Levels/inference_results/visualizations"
+  }
+}
